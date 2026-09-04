@@ -1,0 +1,735 @@
+<title>청람리서치 홈 시안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Hahmlet:wght@400;500;600;700&family=Gothic+A1:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Archivo:wght@500;600;700&display=swap">
+<style>
+/* ============ CHROME (시안 뷰어) ============ */
+:root{
+  --ui-bg:#EDEEF2; --ui-panel:#FFFFFF; --ui-ink:#171A21; --ui-ink2:#5A6070;
+  --ui-line:#D3D6DE; --ui-accent:#1D3A6B; --ui-chip:#E3E6EE;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ui-bg:#101218; --ui-panel:#1A1D25; --ui-ink:#E8EAEF; --ui-ink2:#9AA1B1;
+    --ui-line:#2C313C; --ui-accent:#8FB3F0; --ui-chip:#242833;
+  }
+}
+:root[data-theme="dark"]{
+  --ui-bg:#101218; --ui-panel:#1A1D25; --ui-ink:#E8EAEF; --ui-ink2:#9AA1B1;
+  --ui-line:#2C313C; --ui-accent:#8FB3F0; --ui-chip:#242833;
+}
+*{box-sizing:border-box}
+body{margin:0;
+  background:var(--ui-bg); color:var(--ui-ink);
+  font-family:'IBM Plex Sans KR','Noto Sans KR',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.chrome{
+  position:sticky; top:0; z-index:60; background:var(--ui-panel);
+  border-bottom:1px solid var(--ui-line);
+  display:flex; flex-wrap:wrap; align-items:center; gap:12px 18px; padding:11px 18px;
+}
+.chrome__id{display:flex; align-items:baseline; gap:9px; margin-right:auto}
+.chrome__id b{font-size:13px; font-weight:600; letter-spacing:-.01em}
+.chrome__id span{font-size:11px; color:var(--ui-ink2)}
+.tabs{display:flex; gap:4px; background:var(--ui-chip); padding:3px; border-radius:8px}
+.tabs button{
+  font:inherit; font-size:12px; font-weight:500; letter-spacing:-.01em;
+  padding:6px 13px; border:0; border-radius:6px; background:transparent;
+  color:var(--ui-ink2); cursor:pointer; white-space:nowrap;
+}
+.tabs button:hover{color:var(--ui-ink)}
+.tabs button[aria-selected="true"]{background:var(--ui-panel); color:var(--ui-ink); box-shadow:0 1px 3px rgba(0,0,0,.14)}
+.tabs button:focus-visible{outline:2px solid var(--ui-accent); outline-offset:1px}
+.chrome__note{
+  font-size:11px; color:var(--ui-ink2); border:1px solid var(--ui-line);
+  border-radius:99px; padding:4px 10px;
+}
+.stage{padding:18px; display:flex; justify-content:center}
+.frame{
+  width:100%; max-width:1320px; border-radius:10px; overflow:hidden;
+  box-shadow:0 1px 2px rgba(16,20,30,.10), 0 18px 44px -18px rgba(16,20,30,.34);
+}
+.panel[hidden]{display:none!important}
+.legend{
+  max-width:1320px; margin:0 auto; padding:0 18px 34px;
+  font-size:12px; line-height:1.7; color:var(--ui-ink2);
+}
+.legend b{color:var(--ui-ink); font-weight:600}
+.legend p{margin:.5em 0}
+
+/* ============ 공통 유틸 (시안 내부) ============ */
+.num{font-family:'IBM Plex Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums}
+/* 한국어는 어절 단위로 줄바꿈 */
+.panel h1,.panel h2,.panel h3,.panel h4,.panel p,.panel td,.panel a,.panel button,.panel span,.panel b{word-break:keep-all}
+/* 표는 색·서체를 명시 상속 (문서 모드와 무관하게 동일하게 렌더) */
+.panel table{color:inherit; font-family:inherit; border-collapse:collapse}
+.spark{display:block}
+
+/* ==================================================================
+   시안 A — 터미널
+   ================================================================== */
+#s-a{
+  --bg:#0A0D13; --bg2:#10141C; --bg3:#161B25; --line:#232A36;
+  --ink:#E6EAF2; --ink2:#8C95A8; --ink3:#5C6577;
+  --up:#FF6B61; --dn:#4D9BFF; --flat:#7E879A; --amber:#F2A93B;
+  background:var(--bg); color:var(--ink);
+  font-family:'IBM Plex Sans KR',sans-serif; font-size:13px;
+}
+#s-a .a-top{
+  display:flex; align-items:center; gap:20px; padding:12px 20px;
+  border-bottom:1px solid var(--line); background:var(--bg2);
+}
+#s-a .a-logo{display:flex; align-items:baseline; gap:10px}
+#s-a .a-logo b{font-size:15px; font-weight:600; letter-spacing:-.02em; white-space:nowrap}
+#s-a .a-logo em{
+  font-family:'IBM Plex Mono',monospace; font-style:normal; font-size:10px;
+  letter-spacing:.16em; color:var(--amber);
+}
+#s-a .a-nav{display:flex; gap:2px; margin-left:14px}
+#s-a .a-nav a{
+  color:var(--ink2); text-decoration:none; font-size:12px; padding:6px 11px;
+  border-radius:5px; white-space:nowrap;
+}
+#s-a .a-nav a:hover{color:var(--ink); background:var(--bg3)}
+#s-a .a-nav a[aria-current]{color:var(--ink); background:var(--bg3)}
+#s-a .a-idx{display:flex; gap:18px; margin-left:auto; align-items:center}
+#s-a .a-idx div{display:flex; align-items:baseline; gap:7px; font-size:11px; white-space:nowrap}
+#s-a .a-idx span{color:var(--ink3); letter-spacing:.04em}
+#s-a .a-idx strong{font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:12.5px}
+
+#s-a .a-tape{
+  overflow:hidden; border-bottom:1px solid var(--line); background:var(--bg);
+  position:relative; mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);
+}
+#s-a .a-tape ul{
+  display:flex; gap:26px; list-style:none; margin:0; padding:7px 0;
+  width:max-content; animation:a-scroll 46s linear infinite;
+}
+#s-a .a-tape li{display:flex; gap:8px; align-items:baseline; font-size:11.5px; white-space:nowrap}
+#s-a .a-tape b{font-weight:400; color:var(--ink2)}
+@keyframes a-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){#s-a .a-tape ul{animation:none}}
+
+#s-a .a-grid{display:grid; grid-template-columns:212px minmax(0,1fr) 314px; align-items:start}
+#s-a .a-col{padding:16px 18px; min-height:620px}
+#s-a .a-col + .a-col{border-left:1px solid var(--line)}
+#s-a .a-h{
+  font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.15em;
+  color:var(--ink3); margin:0 0 12px; display:flex; justify-content:space-between;
+}
+#s-a .a-sector{display:flex; flex-direction:column; gap:11px; margin-bottom:26px}
+#s-a .a-srow{display:grid; grid-template-columns:1fr auto; gap:3px 8px; font-size:12px}
+#s-a .a-srow > span:first-child{color:var(--ink2)}
+#s-a .a-bar{grid-column:1/-1; height:5px; background:var(--bg3); border-radius:2px; position:relative; overflow:hidden}
+#s-a .a-bar i{position:absolute; top:0; bottom:0; border-radius:2px}
+#s-a .a-stat{border-top:1px solid var(--line); padding-top:14px; display:grid; gap:10px}
+#s-a .a-stat div{display:flex; justify-content:space-between; font-size:12px; color:var(--ink2)}
+#s-a .a-stat strong{color:var(--ink); font-weight:500}
+
+#s-a table{width:100%; border-collapse:collapse; font-size:12.5px; color:var(--ink)}
+#s-a thead th{
+  font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.12em;
+  color:var(--ink3); font-weight:500; text-align:right; padding:0 8px 9px;
+  border-bottom:1px solid var(--line); white-space:nowrap;
+}
+#s-a thead th:first-child,#s-a thead th.l{text-align:left}
+#s-a tbody td{padding:7px 8px; text-align:right; border-bottom:1px solid #1A202B; white-space:nowrap}
+#s-a tbody td.l{text-align:left}
+#s-a tbody tr:hover td{background:var(--bg2)}
+#s-a .a-nm{font-weight:500}
+#s-a .a-tk{color:var(--ink3); font-size:11px; margin-left:7px; font-family:'IBM Plex Mono',monospace}
+#s-a .a-op{
+  font-size:10px; padding:2px 6px; border-radius:3px; border:1px solid currentColor;
+  font-family:'IBM Plex Mono',monospace; letter-spacing:.05em;
+}
+#s-a .op-buy{color:var(--up)} #s-a .op-hold{color:var(--ink2)} #s-a .op-red{color:var(--dn)}
+#s-a .a-more{margin-top:14px; font-size:11.5px; color:var(--ink3); display:flex; justify-content:space-between}
+#s-a .a-more a{color:var(--amber); text-decoration:none}
+#s-a .a-more a:hover{text-decoration:underline}
+
+#s-a .a-feed{display:flex; flex-direction:column}
+#s-a .a-item{padding:12px 0; border-bottom:1px solid #1A202B; display:grid; gap:6px}
+#s-a .a-item:hover .a-ttl{color:var(--amber)}
+#s-a .a-meta{display:flex; gap:9px; align-items:center; font-size:10.5px; color:var(--ink3); font-family:'IBM Plex Mono',monospace}
+#s-a .a-kind{padding:1px 5px; border-radius:2px; background:var(--bg3); color:var(--ink2); letter-spacing:.04em}
+#s-a .a-ttl{font-size:12.5px; line-height:1.5; color:var(--ink); cursor:pointer}
+#s-a .a-by{font-size:11px; color:var(--ink3)}
+#s-a .a-foot{
+  border-top:1px solid var(--line); padding:14px 20px; background:var(--bg2);
+  font-size:10.5px; color:var(--ink3); display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+}
+
+/* ==================================================================
+   시안 B — 저널
+   ================================================================== */
+#s-b{
+  --paper:#F7F8FA; --card:#FFFFFF; --navy:#12233D; --ink:#1B2839; --ink2:#5D6B7E;
+  --ink3:#8D99A8; --rule:#DDE2E9; --rule2:#EDF0F4; --gold:#A8823C;
+  --up:#C0362C; --dn:#1F5FAE;
+  background:var(--paper); color:var(--ink);
+  font-family:'Gothic A1','Noto Sans KR',sans-serif; font-size:14px;
+}
+#s-b .b-mast{padding:26px 44px 0; max-width:1180px; margin:0 auto}
+#s-b .b-mrow{display:flex; align-items:flex-end; justify-content:space-between; gap:24px}
+#s-b .b-brand{font-family:'Hahmlet',serif; font-weight:700; font-size:27px; letter-spacing:-.03em; color:var(--navy); line-height:1}
+#s-b .b-brand em{
+  display:block; font-family:'Archivo',sans-serif; font-style:normal; font-weight:600;
+  font-size:9.5px; letter-spacing:.3em; color:var(--gold); margin-top:8px;
+}
+#s-b .b-date{font-size:11.5px; color:var(--ink3); text-align:right; line-height:1.7}
+#s-b .b-nav{
+  display:flex; gap:26px; margin-top:20px; padding:11px 0;
+  border-top:2px solid var(--navy); border-bottom:1px solid var(--rule);
+}
+#s-b .b-nav a{color:var(--ink2); text-decoration:none; font-size:13px; font-weight:500}
+#s-b .b-nav a:hover{color:var(--navy)}
+#s-b .b-nav a[aria-current]{color:var(--navy); font-weight:700}
+#s-b .b-nav .b-idx{margin-left:auto; display:flex; gap:20px; font-size:11.5px; color:var(--ink3)}
+#s-b .b-idx strong{font-family:'IBM Plex Mono',monospace; font-weight:500; color:var(--ink)}
+
+#s-b .b-wrap{max-width:1180px; margin:0 auto; padding:0 44px 46px}
+#s-b .b-lead{display:grid; grid-template-columns:minmax(0,1.62fr) minmax(0,1fr); gap:50px; padding:38px 0 34px; border-bottom:1px solid var(--rule)}
+#s-b .b-eyebrow{
+  font-family:'Archivo',sans-serif; font-size:10px; letter-spacing:.22em; font-weight:600;
+  color:var(--gold); margin:0 0 14px;
+}
+#s-b .b-lead h1{
+  font-family:'Hahmlet',serif; font-weight:600; font-size:35px; line-height:1.34;
+  letter-spacing:-.035em; color:var(--navy); margin:0 0 18px; text-wrap:balance;
+}
+#s-b .b-lead p{margin:0 0 20px; font-size:14.5px; line-height:1.85; color:var(--ink2); max-width:60ch}
+#s-b .b-byline{display:flex; gap:14px; align-items:center; font-size:12px; color:var(--ink3)}
+#s-b .b-byline b{color:var(--ink); font-weight:700}
+#s-b .b-cta{
+  display:inline-flex; align-items:center; gap:8px; margin-top:22px; padding:11px 20px;
+  background:var(--navy); color:#fff; text-decoration:none; font-size:12.5px; font-weight:700;
+}
+#s-b .b-cta:hover{background:#1D3557}
+#s-b .b-tgt{
+  background:var(--card); border:1px solid var(--rule); padding:22px 24px;
+  align-self:start; display:grid; gap:14px;
+}
+#s-b .b-tgt h3{margin:0; font-size:11px; letter-spacing:.14em; color:var(--ink3); font-family:'Archivo',sans-serif; font-weight:600}
+#s-b .b-tgtrow{display:flex; justify-content:space-between; align-items:baseline; font-size:13px}
+#s-b .b-tgtrow span{color:var(--ink2)}
+#s-b .b-tgtrow strong{font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600}
+#s-b .b-tgtbig{border-top:1px solid var(--rule2); padding-top:14px}
+#s-b .b-tgtbig strong{font-size:24px; color:var(--up)}
+
+#s-b .b-secthead{
+  display:flex; align-items:baseline; justify-content:space-between; gap:20px;
+  padding:34px 0 16px;
+}
+#s-b .b-secthead h2{font-family:'Hahmlet',serif; font-size:20px; font-weight:600; letter-spacing:-.03em; color:var(--navy); margin:0}
+#s-b .b-secthead a{font-size:12px; color:var(--ink3); text-decoration:none}
+#s-b .b-secthead a:hover{color:var(--navy)}
+#s-b .b-reports{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0 34px}
+#s-b .b-rep{padding:18px 0; border-top:1px solid var(--rule); display:grid; gap:7px; align-content:start}
+#s-b .b-rep:hover h4{color:var(--gold)}
+#s-b .b-rtop{display:flex; gap:9px; align-items:center; font-size:10.5px; color:var(--ink3); font-family:'IBM Plex Mono',monospace}
+#s-b .b-rkind{color:var(--navy); font-family:'Gothic A1',sans-serif; font-weight:700; letter-spacing:0}
+#s-b .b-rep h4{margin:0; font-size:14px; line-height:1.55; font-weight:500; letter-spacing:-.02em; cursor:pointer}
+#s-b .b-rep span{font-size:11.5px; color:var(--ink3)}
+
+#s-b .b-cov{margin-top:16px; background:var(--card); border:1px solid var(--rule)}
+#s-b .b-tabs{display:flex; gap:0; border-bottom:1px solid var(--rule); overflow-x:auto}
+#s-b .b-tabs button{
+  font:inherit; font-size:12.5px; font-weight:500; padding:13px 17px; border:0;
+  background:transparent; color:var(--ink2); cursor:pointer; white-space:nowrap;
+  border-bottom:2px solid transparent; margin-bottom:-1px;
+}
+#s-b .b-tabs button:hover{color:var(--navy)}
+#s-b .b-tabs button[aria-selected="true"]{color:var(--navy); font-weight:700; border-bottom-color:var(--navy)}
+#s-b .b-scroll{overflow-x:auto}
+#s-b table{width:100%; border-collapse:collapse; font-size:13px; min-width:820px; color:var(--ink)}
+#s-b thead th{
+  font-size:10.5px; letter-spacing:.08em; color:var(--ink3); font-weight:500;
+  text-align:right; padding:12px 16px; border-bottom:1px solid var(--rule); white-space:nowrap;
+}
+#s-b thead th.l{text-align:left}
+#s-b tbody td{padding:11px 16px; text-align:right; border-bottom:1px solid var(--rule2); white-space:nowrap}
+#s-b tbody td.l{text-align:left}
+#s-b tbody tr:last-child td{border-bottom:0}
+#s-b tbody tr:hover td{background:#F9FAFC}
+#s-b .b-nm{font-weight:700; letter-spacing:-.01em}
+#s-b .b-tk{color:var(--ink3); font-size:11px; margin-left:8px; font-family:'IBM Plex Mono',monospace}
+#s-b .b-op{font-size:11.5px; font-weight:700}
+#s-b .op-buy{color:var(--up)} #s-b .op-hold{color:var(--ink2)} #s-b .op-red{color:var(--dn)}
+
+#s-b .b-team{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--rule); border:1px solid var(--rule); margin-top:16px}
+#s-b .b-mem{background:var(--card); padding:17px 18px; display:grid; gap:4px}
+#s-b .b-mem b{font-size:13.5px; letter-spacing:-.01em}
+#s-b .b-mem span{font-size:11.5px; color:var(--ink3)}
+#s-b .b-foot{border-top:1px solid var(--rule); background:#F1F3F6; padding:20px 44px}
+#s-b .b-footin{max-width:1180px; margin:0 auto; font-size:11px; color:var(--ink3); line-height:1.8}
+
+/* ==================================================================
+   시안 C — 대시보드
+   ================================================================== */
+#s-c{
+  --bg:#F3F5F8; --surf:#FFFFFF; --ink:#151A22; --ink2:#5A6373; --ink3:#8D96A5;
+  --line:#E2E6EC; --line2:#EFF2F6; --graphite:#22272F;
+  --up:#C0362C; --dn:#1F5FAE; --mid:#E7E9ED;
+  background:var(--bg); color:var(--ink);
+  font-family:'Noto Sans KR',sans-serif; font-size:13.5px;
+}
+#s-c .c-head{
+  display:flex; align-items:center; gap:16px; padding:12px 22px;
+  background:var(--surf); border-bottom:1px solid var(--line);
+}
+#s-c .c-brand{font-family:'Archivo','Noto Sans KR',sans-serif; font-weight:700; font-size:15px; letter-spacing:-.02em}
+#s-c .c-brand i{font-style:normal; color:var(--ink3); font-weight:500}
+#s-c .c-nav{display:flex; gap:3px; margin-left:12px}
+#s-c .c-nav a{font-size:12.5px; color:var(--ink2); text-decoration:none; padding:7px 12px; border-radius:7px}
+#s-c .c-nav a:hover{background:var(--bg); color:var(--ink)}
+#s-c .c-nav a[aria-current]{background:var(--graphite); color:#fff}
+#s-c .c-search{
+  margin-left:auto; display:flex; align-items:center; gap:8px; background:var(--bg);
+  border:1px solid var(--line); border-radius:8px; padding:8px 12px; min-width:220px;
+  font-size:12.5px; color:var(--ink3);
+}
+#s-c .c-body{padding:20px 22px 26px; display:grid; gap:18px}
+#s-c .c-tiles{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden}
+#s-c .c-tile{background:var(--surf); padding:15px 18px; display:grid; gap:5px}
+#s-c .c-tile span{font-size:11.5px; color:var(--ink3)}
+#s-c .c-tile b{font-family:'IBM Plex Mono',monospace; font-size:23px; font-weight:500; letter-spacing:-.02em}
+#s-c .c-tile em{font-style:normal; font-size:11.5px; color:var(--ink2)}
+
+#s-c .c-card{background:var(--surf); border:1px solid var(--line); border-radius:10px}
+#s-c .c-ch{display:flex; align-items:center; gap:12px; padding:14px 18px; border-bottom:1px solid var(--line2)}
+#s-c .c-ch h3{margin:0; font-size:13.5px; font-weight:700; letter-spacing:-.02em}
+#s-c .c-ch span{font-size:11.5px; color:var(--ink3)}
+#s-c .c-ch .c-right{margin-left:auto; display:flex; gap:6px; align-items:center}
+
+#s-c .c-heat{display:grid; grid-template-columns:repeat(12,1fr); grid-auto-rows:74px; gap:3px; padding:14px}
+#s-c .c-cell{
+  border-radius:6px; padding:11px 13px; display:flex; flex-direction:column;
+  justify-content:space-between; cursor:default; transition:transform .12s ease;
+}
+#s-c .c-cell:hover{transform:scale(1.012)}
+#s-c .c-cell b{font-size:13.5px; font-weight:700; letter-spacing:-.02em; line-height:1.25}
+#s-c .c-cell u{text-decoration:none; display:block; font-size:10.5px; opacity:.78; font-weight:400; margin-top:3px}
+#s-c .c-cell i{font-style:normal; font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:500}
+#s-c .c-scale{display:flex; align-items:center; gap:7px; padding:0 16px 14px; font-size:10.5px; color:var(--ink3)}
+#s-c .c-scale div{display:flex; gap:2px}
+#s-c .c-scale i{width:26px; height:9px; border-radius:2px; display:block}
+
+#s-c .c-main{display:grid; grid-template-columns:minmax(0,1fr) 372px; gap:18px; align-items:start}
+#s-c .c-chips{display:flex; gap:5px; flex-wrap:wrap; padding:12px 18px; border-bottom:1px solid var(--line2)}
+#s-c .c-chips button{
+  font:inherit; font-size:11.5px; padding:6px 12px; border-radius:99px; cursor:pointer;
+  border:1px solid var(--line); background:var(--surf); color:var(--ink2);
+}
+#s-c .c-chips button:hover{border-color:var(--ink3); color:var(--ink)}
+#s-c .c-chips button[aria-pressed="true"]{background:var(--graphite); border-color:var(--graphite); color:#fff}
+#s-c .c-scroll{overflow-x:auto}
+#s-c table{width:100%; border-collapse:collapse; font-size:13px; min-width:700px; color:var(--ink)}
+#s-c thead th{
+  font-size:10.5px; letter-spacing:.05em; color:var(--ink3); font-weight:500; text-align:right;
+  padding:10px 14px; border-bottom:1px solid var(--line2); white-space:nowrap; background:#FAFBFC;
+}
+#s-c thead th.l{text-align:left}
+#s-c tbody td{padding:9px 14px; text-align:right; border-bottom:1px solid var(--line2); white-space:nowrap}
+#s-c tbody td.l{text-align:left}
+#s-c tbody tr:last-child td{border-bottom:0}
+#s-c tbody tr:hover td{background:#F7F9FB}
+#s-c .c-nm{font-weight:700; letter-spacing:-.02em}
+#s-c .c-tk{color:var(--ink3); font-size:10.5px; margin-left:7px; font-family:'IBM Plex Mono',monospace}
+#s-c .c-op{font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:99px}
+#s-c .op-buy{background:#FBEAE8; color:#9E2A21} #s-c .op-hold{background:#EEF0F3; color:#525C6B} #s-c .op-red{background:#E9F0FA; color:#1B5296}
+#s-c .c-ups{display:flex; align-items:center; gap:8px; justify-content:flex-end}
+#s-c .c-upsbar{width:52px; height:5px; border-radius:99px; background:var(--line2); overflow:hidden}
+#s-c .c-upsbar i{display:block; height:100%; border-radius:99px; background:var(--graphite)}
+#s-c .c-rep{display:grid; gap:6px; padding:13px 18px; border-bottom:1px solid var(--line2); cursor:pointer}
+#s-c .c-rep:last-child{border-bottom:0}
+#s-c .c-rep:hover{background:#F7F9FB}
+#s-c .c-rtop{display:flex; align-items:center; gap:8px; font-size:10.5px; color:var(--ink3)}
+#s-c .c-badge{padding:2px 7px; border-radius:4px; font-weight:700; background:var(--line2); color:var(--ink2)}
+#s-c .c-badge[data-k="기업분석"]{background:#EDE9F6; color:#4C3A80}
+#s-c .c-badge[data-k="산업분석"]{background:#E6F1EE; color:#245B4E}
+#s-c .c-badge[data-k="이슈코멘트"]{background:#FAF0E2; color:#7A5417}
+#s-c .c-rep h4{margin:0; font-size:13px; line-height:1.5; font-weight:500; letter-spacing:-.02em}
+#s-c .c-rby{font-size:11px; color:var(--ink3)}
+#s-c .c-foot{padding:4px 22px 22px; font-size:11px; color:var(--ink3); line-height:1.7}
+
+@media (max-width:1080px){
+  #s-a .a-grid{grid-template-columns:1fr}
+  #s-a .a-col + .a-col{border-left:0; border-top:1px solid var(--line)}
+  #s-a .a-col{min-height:0}
+  #s-b .b-lead,#s-b .b-reports{grid-template-columns:1fr; gap:24px}
+  #s-b .b-team{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #s-c .c-main{grid-template-columns:1fr}
+  #s-c .c-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style>
+
+<div class="chrome">
+  <div class="chrome__id"><b>청람리서치 홈 화면</b><span>디자인 시안 3종 · 2026.09.04</span></div>
+  <div class="tabs" role="tablist" aria-label="디자인 시안">
+    <button role="tab" aria-selected="true" data-go="a">A · 터미널</button>
+    <button role="tab" aria-selected="false" data-go="b">B · 저널</button>
+    <button role="tab" aria-selected="false" data-go="c">C · 대시보드</button>
+  </div>
+  <span class="chrome__note">가상 회사 · 샘플 데이터</span>
+</div>
+
+<div class="stage">
+  <div class="frame">
+    <section class="panel" id="s-a" role="tabpanel" aria-label="시안 A 터미널"></section>
+    <section class="panel" id="s-b" role="tabpanel" aria-label="시안 B 저널" hidden></section>
+    <section class="panel" id="s-c" role="tabpanel" aria-label="시안 C 대시보드" hidden></section>
+  </div>
+</div>
+
+<div class="legend">
+  <p><b>A · 터미널</b> — 트레이딩 데스크에 띄워두는 화면. 다크 그라운드에 3단 구성(섹터 요약 / 커버리지 시세 / 리포트 피드), 숫자는 모두 등폭 모노스페이스. 시세 확인이 방문 목적인 기관 고객용.</p>
+  <p><b>B · 저널</b> — 리서치하우스를 &lsquo;발행처&rsquo;로 보는 관점. 대표 리포트 한 건을 헤드라인으로 세우고 커버리지 표는 정갈하게 받쳐줍니다. 세리프 제목 + 네이비. 브랜드·채용·기관 영업에 유리.</p>
+  <p><b>C · 대시보드</b> — 섹터 히트맵이 첫 화면의 중심. 타일 크기는 커버리지 내 시총 비중, 색은 등락률(발산형 스케일)입니다. UI는 무채색으로 눌러두고 색은 데이터에만 씁니다. 리테일·개인 구독자 대상.</p>
+  <p style="margin-top:1.1em">등락 색상은 국내 관행대로 <b style="color:#C0362C">상승 적색</b> / <b style="color:#1F5FAE">하락 청색</b>입니다. 표기된 종목·시세·리포트·애널리스트는 모두 시안용 가상 데이터입니다.</p>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var STOCKS=[
+ {n:'삼성전자',t:'005930',s:'반도체',p:84300,c:2.31,o:'매수',tp:105000},
+ {n:'SK하이닉스',t:'000660',s:'반도체',p:268500,c:3.84,o:'매수',tp:340000},
+ {n:'한미반도체',t:'042700',s:'반도체',p:118200,c:-1.42,o:'중립',tp:125000},
+ {n:'NAVER',t:'035420',s:'인터넷/플랫폼',p:212000,c:0.71,o:'매수',tp:265000},
+ {n:'카카오',t:'035720',s:'인터넷/플랫폼',p:41150,c:-2.14,o:'중립',tp:44000},
+ {n:'크래프톤',t:'259960',s:'인터넷/플랫폼',p:331000,c:1.07,o:'매수',tp:400000},
+ {n:'LG에너지솔루션',t:'373220',s:'2차전지',p:342500,c:-1.86,o:'중립',tp:360000},
+ {n:'삼성SDI',t:'006400',s:'2차전지',p:289000,c:-0.51,o:'중립',tp:300000},
+ {n:'에코프로비엠',t:'247540',s:'2차전지',p:96400,c:-3.22,o:'비중축소',tp:85000},
+ {n:'현대차',t:'005380',s:'자동차/모빌리티',p:246000,c:1.65,o:'매수',tp:310000},
+ {n:'기아',t:'000270',s:'자동차/모빌리티',p:108700,c:0.93,o:'매수',tp:140000},
+ {n:'HL만도',t:'204320',s:'자동차/모빌리티',p:41300,c:-0.72,o:'중립',tp:44000},
+ {n:'삼성바이오로직스',t:'207940',s:'바이오/헬스케어',p:1024000,c:1.19,o:'매수',tp:1250000},
+ {n:'셀트리온',t:'068270',s:'바이오/헬스케어',p:178600,c:-0.89,o:'중립',tp:195000},
+ {n:'알테오젠',t:'196170',s:'바이오/헬스케어',p:402500,c:4.12,o:'매수',tp:480000},
+ {n:'KB금융',t:'105560',s:'금융',p:92800,c:0.65,o:'매수',tp:115000},
+ {n:'신한지주',t:'055550',s:'금융',p:61400,c:0.33,o:'매수',tp:76000},
+ {n:'메리츠금융지주',t:'138040',s:'금융',p:118900,c:-0.42,o:'중립',tp:125000},
+ {n:'HD한국조선해양',t:'009540',s:'조선/기계',p:289500,c:5.27,o:'매수',tp:360000},
+ {n:'한화오션',t:'042660',s:'조선/기계',p:78200,c:3.91,o:'매수',tp:95000},
+ {n:'두산에너빌리티',t:'034020',s:'조선/기계',p:42650,c:2.08,o:'매수',tp:52000}
+];
+
+var SECTORS=[
+ {n:'반도체',w:28,c:2.41,k:9,col:5,row:2},
+ {n:'2차전지',w:16,c:-1.72,k:7,col:4,row:1},
+ {n:'인터넷/플랫폼',w:14,c:-0.18,k:6,col:3,row:1},
+ {n:'자동차/모빌리티',w:13,c:0.94,k:6,col:4,row:1},
+ {n:'바이오/헬스케어',w:12,c:1.32,k:7,col:3,row:1},
+ {n:'조선/기계',w:10,c:3.86,k:4,col:7,row:1},
+ {n:'금융',w:7,c:0.24,k:3,col:5,row:1}
+];
+
+var REPORTS=[
+ {d:'09.04',k:'기업분석',t:'[삼성전자] HBM4 양산 진입, 2027년 이익 레버리지의 시작',a:'김도현',p:24},
+ {d:'09.04',k:'데일리',t:'모닝 브리프 | 9월 FOMC 프리뷰와 코스피 밸류에이션 점검',a:'리서치센터',p:6},
+ {d:'09.03',k:'산업분석',t:'반도체 | 서버 DRAM 재고 6주 하회, 4Q 가격협상 프리뷰',a:'김도현·이서준',p:38},
+ {d:'09.03',k:'기업분석',t:'[HD한국조선해양] LNG선 수주잔고 사상 최대, 믹스 개선 본격화',a:'박지우',p:18},
+ {d:'09.02',k:'산업분석',t:'2차전지 | 유럽 EV 보조금 축소 시나리오와 셀 3사 민감도',a:'최유진',p:31},
+ {d:'09.02',k:'기업분석',t:'[알테오젠] ALT-B4 로열티 인식 구간 진입',a:'정하늘',p:16},
+ {d:'09.01',k:'이슈코멘트',t:'[카카오] 광고 회복 지연 — 목표주가 44,000원 하향',a:'이서준',p:9},
+ {d:'08.29',k:'산업분석',t:'금융 | 밸류업 2차 공시 시즌, 무엇을 확인할 것인가',a:'한지민',p:27}
+];
+
+var TEAM=[
+ {n:'김도현',s:'반도체 · 디스플레이',y:'센터장 / 14년차'},
+ {n:'이서준',s:'인터넷 · 게임',y:'11년차'},
+ {n:'최유진',s:'2차전지 · 소재',y:'9년차'},
+ {n:'박지우',s:'조선 · 기계',y:'12년차'},
+ {n:'정하늘',s:'제약 · 바이오',y:'8년차'},
+ {n:'한지민',s:'은행 · 증권',y:'10년차'},
+ {n:'오세진',s:'자동차 · 부품',y:'7년차'},
+ {n:'윤태경',s:'퀀트 · 투자전략',y:'13년차'}
+];
+
+var INDEX=[
+ {n:'KOSPI',v:'3,142.68',c:0.84},{n:'KOSDAQ',v:'812.44',c:-0.31},
+ {n:'USD/KRW',v:'1,338.20',c:-0.42},{n:'커버리지 평균',v:'+0.61%',c:0.61}
+];
+
+/* ---------- helpers ---------- */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function won(n){return n.toLocaleString('ko-KR');}
+function pct(c){return (c>0?'+':'')+c.toFixed(2)+'%';}
+function tone(c){return c>0?'var(--up)':(c<0?'var(--dn)':'var(--ink2)');}
+function opClass(o){return o==='매수'?'op-buy':(o==='중립'?'op-hold':'op-red');}
+function upside(s){return (s.tp/s.p-1)*100;}
+
+/* 결정적 의사난수로 만든 12거래일 샘플 경로 (시안용) */
+function path(seed,chg){
+  var x=seed*7919%2147483647, out=[100], i;
+  function rnd(){x=(x*48271)%2147483647; return x/2147483647;}
+  for(i=0;i<11;i++) out.push(out[out.length-1]*(1+(rnd()-0.48)*0.021));
+  out.push(out[out.length-1]*(1+chg/100));
+  return out;
+}
+function spark(vals,w,h,color){
+  var min=Math.min.apply(null,vals), max=Math.max.apply(null,vals), r=(max-min)||1;
+  var X=function(i){return (i*(w-3)/(vals.length-1)+1.5).toFixed(1);};
+  var Y=function(v){return (h-2.5-((v-min)/r)*(h-5)).toFixed(1);};
+  var line='M'+vals.map(function(v,i){return X(i)+','+Y(v);}).join(' L');
+  var area=line+' L'+X(vals.length-1)+','+h+' L'+X(0)+','+h+' Z';
+  return '<svg class="spark" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'" aria-hidden="true">'+
+    '<path d="'+area+'" fill="'+color+'" fill-opacity="0.14"/>'+
+    '<path d="'+line+'" fill="none" stroke="'+color+'" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>'+
+    '<circle cx="'+X(vals.length-1)+'" cy="'+Y(vals[vals.length-1])+'" r="2" fill="'+color+'"/></svg>';
+}
+function heat(c){
+  if(c>=3)    return ['#A82E22','#FFFFFF'];
+  if(c>=1.5)  return ['#CB5145','#FFFFFF'];
+  if(c>0.3)   return ['#EC9C93','#3B120C'];
+  if(c>=-0.3) return ['#E4E7EC','#3A414B'];
+  if(c>-1.5)  return ['#A9C3E6','#0F2E4C'];
+  if(c>-3)    return ['#4E86C9','#FFFFFF'];
+  return ['#1B559E','#FFFFFF'];
+}
+
+/* ================= 시안 A · 터미널 ================= */
+function renderA(){
+  var idx=INDEX.map(function(x){
+    return '<div><span>'+esc(x.n)+'</span><strong>'+esc(x.v)+'</strong>'+
+      '<strong style="color:'+tone(x.c)+'">'+pct(x.c)+'</strong></div>';
+  }).join('');
+
+  var tapeItems=STOCKS.map(function(s){
+    return '<li><b>'+esc(s.n)+'</b><span class="num" style="color:'+tone(s.c)+'">'+
+      won(s.p)+'  '+pct(s.c)+'</span></li>';
+  }).join('');
+
+  var maxAbs=Math.max.apply(null,SECTORS.map(function(x){return Math.abs(x.c);}));
+  var sect=SECTORS.map(function(x){
+    var w=(Math.abs(x.c)/maxAbs)*50, side=x.c>=0?'left:50%':'right:50%';
+    return '<div class="a-srow"><span>'+esc(x.n)+'</span>'+
+      '<span class="num" style="color:'+tone(x.c)+'">'+pct(x.c)+'</span>'+
+      '<i class="a-bar"><i style="'+side+';width:'+w.toFixed(1)+'%;background:'+tone(x.c)+'"></i></i></div>';
+  }).join('');
+
+  var rows=STOCKS.map(function(s){
+    var u=upside(s), c=tone(s.c);
+    return '<tr>'+
+      '<td class="l"><span class="a-nm">'+esc(s.n)+'</span><span class="a-tk">'+s.t+'</span></td>'+
+      '<td class="num">'+won(s.p)+'</td>'+
+      '<td class="num" style="color:'+c+'">'+pct(s.c)+'</td>'+
+      '<td style="padding-top:3px;padding-bottom:0">'+spark(path(parseInt(s.t,10),s.c),64,20,c)+'</td>'+
+      '<td><span class="a-op '+opClass(s.o)+'">'+esc(s.o)+'</span></td>'+
+      '<td class="num">'+won(s.tp)+'</td>'+
+      '<td class="num" style="color:var(--ink2)">'+(u>0?'+':'')+u.toFixed(1)+'%</td></tr>';
+  }).join('');
+
+  var feed=REPORTS.slice(0,7).map(function(r){
+    return '<article class="a-item"><div class="a-meta"><span>'+r.d+'</span>'+
+      '<span class="a-kind">'+esc(r.k)+'</span><span>'+r.p+'p</span></div>'+
+      '<h3 class="a-ttl">'+esc(r.t)+'</h3><div class="a-by">'+esc(r.a)+'</div></article>';
+  }).join('');
+
+  return '<div class="a-top"><div class="a-logo"><b>청람리서치</b><em>RESEARCH TERMINAL</em></div>'+
+    '<nav class="a-nav"><a href="#" aria-current="page">커버리지</a><a href="#">리포트</a>'+
+    '<a href="#">모델 포트폴리오</a><a href="#">애널리스트</a></nav>'+
+    '<div class="a-idx">'+idx+'</div></div>'+
+    '<div class="a-tape"><ul>'+tapeItems+tapeItems+'</ul></div>'+
+    '<div class="a-grid">'+
+      '<div class="a-col"><h2 class="a-h"><span>SECTOR</span><span>D-1</span></h2>'+
+        '<div class="a-sector">'+sect+'</div>'+
+        '<div class="a-stat">'+
+          '<div><span>커버리지 종목</span><strong class="num">42</strong></div>'+
+          '<div><span>상승 / 하락</span><strong class="num"><span style="color:var(--up)">13</span> / <span style="color:var(--dn)">8</span></strong></div>'+
+          '<div><span>매수 의견 비중</span><strong class="num">61.9%</strong></div>'+
+          '<div><span>이번 주 발간</span><strong class="num">7건</strong></div>'+
+        '</div></div>'+
+      '<div class="a-col"><h2 class="a-h"><span>COVERAGE</span><span>09.04 15:30 KST</span></h2>'+
+        '<table><thead><tr><th class="l">종목</th><th>현재가</th><th>전일대비</th>'+
+        '<th class="l" style="text-align:left">12D</th><th>의견</th><th>목표주가</th><th>여력</th></tr></thead>'+
+        '<tbody>'+rows+'</tbody></table>'+
+        '<div class="a-more"><span>외 21종목</span><a href="#">전체 커버리지 →</a></div></div>'+
+      '<div class="a-col"><h2 class="a-h"><span>RESEARCH</span><span>LATEST</span></h2>'+
+        '<div class="a-feed">'+feed+'</div></div>'+
+    '</div>'+
+    '<div class="a-foot"><span>본 화면은 디자인 시안입니다. 종목·시세·리포트·인물은 모두 가상의 예시이며 투자의견이 아닙니다.</span>'+
+    '<span>청람리서치 | 금융투자업 등록 예시</span></div>';
+}
+
+/* ================= 시안 B · 저널 ================= */
+var bSector='전체';
+function bRows(){
+  var list=STOCKS.filter(function(s){return bSector==='전체'||s.s===bSector;}).slice(0,9);
+  return list.map(function(s){
+    var u=upside(s), c=tone(s.c);
+    return '<tr>'+
+      '<td class="l"><span class="b-nm">'+esc(s.n)+'</span><span class="b-tk">'+s.t+'</span></td>'+
+      '<td class="l" style="color:var(--ink3);font-size:12px">'+esc(s.s)+'</td>'+
+      '<td class="num">'+won(s.p)+'</td>'+
+      '<td class="num" style="color:'+c+'">'+pct(s.c)+'</td>'+
+      '<td style="padding-top:6px;padding-bottom:2px">'+spark(path(parseInt(s.t,10),s.c),70,22,c)+'</td>'+
+      '<td><span class="b-op '+opClass(s.o)+'">'+esc(s.o)+'</span></td>'+
+      '<td class="num">'+won(s.tp)+'</td>'+
+      '<td class="num" style="color:var(--ink2)">'+(u>0?'+':'')+u.toFixed(1)+'%</td></tr>';
+  }).join('');
+}
+function renderB(){
+  var tabs=['전체'].concat(SECTORS.map(function(x){return x.n;})).map(function(n){
+    return '<button role="tab" data-sec="'+esc(n)+'" aria-selected="'+(n===bSector)+'">'+esc(n)+'</button>';
+  }).join('');
+  var reps=REPORTS.slice(1,7).map(function(r){
+    return '<article class="b-rep"><div class="b-rtop"><span>'+r.d+'</span>'+
+      '<span class="b-rkind">'+esc(r.k)+'</span></div>'+
+      '<h4>'+esc(r.t)+'</h4><span>'+esc(r.a)+' · '+r.p+'p</span></article>';
+  }).join('');
+  var team=TEAM.slice(0,8).map(function(m){
+    return '<div class="b-mem"><b>'+esc(m.n)+'</b><span>'+esc(m.s)+'</span><span>'+esc(m.y)+'</span></div>';
+  }).join('');
+  var idx=INDEX.slice(0,3).map(function(x){
+    return '<span>'+esc(x.n)+' <strong>'+esc(x.v)+'</strong> <strong style="color:'+tone(x.c)+'">'+pct(x.c)+'</strong></span>';
+  }).join('');
+
+  return '<header class="b-mast"><div class="b-mrow">'+
+      '<div class="b-brand">청람리서치<em>CHEONGRAM RESEARCH</em></div>'+
+      '<div class="b-date">2026년 9월 4일 금요일<br>커버리지 42종목 · 애널리스트 8인</div></div>'+
+      '<nav class="b-nav"><a href="#" aria-current="page">리서치</a><a href="#">커버리지</a>'+
+      '<a href="#">애널리스트</a><a href="#">구독</a><a href="#">회사소개</a>'+
+      '<span class="b-idx">'+idx+'</span></nav></header>'+
+    '<div class="b-wrap">'+
+      '<div class="b-lead"><div>'+
+        '<p class="b-eyebrow">THIS WEEK · 반도체</p>'+
+        '<h1>HBM4 양산 진입, 2027년 이익 레버리지의 시작</h1>'+
+        '<p>삼성전자 HBM4 12단 제품이 3분기 말 고객사 양산 승인 단계에 진입한 것으로 파악된다. '+
+        '경쟁사 대비 6개월 이내로 좁혀진 격차는 2026년 하반기 물량 배분에서 유의미한 변화를 만들 가능성이 높다. '+
+        '메모리 3사 합산 HBM 캐파 대비 동사 비중 가정을 21%에서 28%로 상향하며, 2027년 지배주주순이익 추정치를 12.4% 상향한다.</p>'+
+        '<div class="b-byline"><b>김도현</b> 리서치센터장 · 반도체<span>2026.09.04 · 24페이지</span></div>'+
+        '<a class="b-cta" href="#">리포트 원문 내려받기 →</a>'+
+      '</div><aside class="b-tgt"><h3>INVESTMENT VIEW</h3>'+
+        '<div class="b-tgtrow"><span>투자의견</span><strong style="color:var(--up)">매수 유지</strong></div>'+
+        '<div class="b-tgtrow"><span>목표주가</span><strong>105,000원</strong></div>'+
+        '<div class="b-tgtrow"><span>현재가 (09.04)</span><strong>84,300원</strong></div>'+
+        '<div class="b-tgtrow b-tgtbig"><span>상승여력</span><strong>+24.6%</strong></div></aside></div>'+
+
+      '<div class="b-secthead"><h2>최근 발간 리포트</h2><a href="#">전체 아카이브 →</a></div>'+
+      '<div class="b-reports">'+reps+'</div>'+
+
+      '<div class="b-secthead"><h2>커버리지 유니버스</h2><a href="#">42종목 전체 보기 →</a></div>'+
+      '<div class="b-cov"><div class="b-tabs" role="tablist">'+tabs+'</div>'+
+        '<div class="b-scroll"><table><thead><tr><th class="l">종목</th><th class="l">섹터</th>'+
+        '<th>현재가</th><th>전일대비</th><th class="l">12거래일</th><th>의견</th><th>목표주가</th><th>상승여력</th>'+
+        '</tr></thead><tbody id="b-tbody">'+bRows()+'</tbody></table></div></div>'+
+
+      '<div class="b-secthead"><h2>애널리스트</h2><a href="#">전체 프로필 →</a></div>'+
+      '<div class="b-team">'+team+'</div>'+
+    '</div>'+
+    '<footer class="b-foot"><div class="b-footin">본 화면은 디자인 시안입니다. 표기된 회사·종목·시세·리포트·인물은 모두 가상의 예시이며 실제 투자의견이 아닙니다.<br>'+
+    '청람리서치 · 서울시 영등포구 여의대로 (예시) · research@example.com</div></footer>';
+}
+
+/* ================= 시안 C · 대시보드 ================= */
+var cSector='전체';
+function cRows(){
+  var list=STOCKS.filter(function(s){return cSector==='전체'||s.s===cSector;});
+  return list.map(function(s){
+    var u=upside(s), c=tone(s.c), bar=Math.max(0,Math.min(100,u/40*100));
+    return '<tr>'+
+      '<td class="l"><span class="c-nm">'+esc(s.n)+'</span><span class="c-tk">'+s.t+'</span></td>'+
+      '<td class="num">'+won(s.p)+'</td>'+
+      '<td class="num" style="color:'+c+'">'+pct(s.c)+'</td>'+
+      '<td style="padding-top:5px;padding-bottom:1px">'+spark(path(parseInt(s.t,10),s.c),68,22,c)+'</td>'+
+      '<td><span class="c-op '+opClass(s.o)+'">'+esc(s.o)+'</span></td>'+
+      '<td><span class="c-ups"><span class="num" style="color:var(--ink2);font-size:12px">'+
+        (u>0?'+':'')+u.toFixed(1)+'%</span>'+
+        '<span class="c-upsbar"><i style="width:'+bar.toFixed(0)+'%"></i></span></span></td></tr>';
+  }).join('');
+}
+function renderC(){
+  var cells=SECTORS.map(function(x){
+    var h=heat(x.c);
+    return '<div class="c-cell" style="grid-column:span '+x.col+';grid-row:span '+x.row+';background:'+h[0]+';color:'+h[1]+'"'+
+      ' title="'+esc(x.n)+' · 등락 '+pct(x.c)+' · 커버리지 '+x.k+'종목 · 비중 '+x.w+'%">'+
+      '<span><b>'+esc(x.n)+'</b><u>'+x.k+'종목 · 비중 '+x.w+'%</u></span><i>'+pct(x.c)+'</i></div>';
+  }).join('');
+  var scale=[['#1B559E','-3%'],['#4E86C9',''],['#A9C3E6',''],['#E4E7EC','0'],['#EC9C93',''],['#CB5145',''],['#A82E22','+3%']]
+    .map(function(p){return '<i style="background:'+p[0]+'"></i>';}).join('');
+  var chips=['전체'].concat(SECTORS.map(function(x){return x.n;})).map(function(n){
+    return '<button data-csec="'+esc(n)+'" aria-pressed="'+(n===cSector)+'">'+esc(n)+'</button>';
+  }).join('');
+  var reps=REPORTS.map(function(r){
+    return '<article class="c-rep"><div class="c-rtop"><span class="c-badge" data-k="'+esc(r.k)+'">'+esc(r.k)+'</span>'+
+      '<span>'+r.d+'</span><span>'+r.p+'페이지</span></div>'+
+      '<h4>'+esc(r.t)+'</h4><div class="c-rby">'+esc(r.a)+'</div></article>';
+  }).join('');
+
+  return '<header class="c-head"><div class="c-brand">CHEONGRAM <i>리서치</i></div>'+
+      '<nav class="c-nav"><a href="#" aria-current="page">홈</a><a href="#">커버리지</a>'+
+      '<a href="#">리포트</a><a href="#">애널리스트</a><a href="#">구독</a></nav>'+
+      '<div class="c-search">종목 · 리포트 검색</div></header>'+
+    '<div class="c-body">'+
+      '<div class="c-tiles">'+
+        '<div class="c-tile"><span>커버리지 종목</span><b>42</b><em>7개 섹터</em></div>'+
+        '<div class="c-tile"><span>커버리지 평균 등락</span><b style="color:var(--up)">+0.61%</b><em>KOSPI +0.84%</em></div>'+
+        '<div class="c-tile"><span>매수 의견</span><b>26</b><em>전체의 61.9%</em></div>'+
+        '<div class="c-tile"><span>이번 주 발간</span><b>7</b><em>최근 09.04 · 삼성전자</em></div>'+
+      '</div>'+
+      '<div class="c-card"><div class="c-ch"><h3>섹터별 등락</h3>'+
+        '<span>타일 크기 = 커버리지 내 시총 비중</span>'+
+        '<span class="c-right"><span>2026.09.04 종가</span></span></div>'+
+        '<div class="c-heat">'+cells+'</div>'+
+        '<div class="c-scale"><span>하락</span><div>'+scale+'</div><span>상승</span>'+
+        '<span style="margin-left:auto">-3% &nbsp;→&nbsp; +3%</span></div></div>'+
+      '<div class="c-main">'+
+        '<div class="c-card"><div class="c-ch"><h3>커버리지 종목</h3>'+
+          '<span class="c-right" id="c-count"></span></div>'+
+          '<div class="c-chips">'+chips+'</div>'+
+          '<div class="c-scroll"><table><thead><tr><th class="l">종목</th><th>현재가</th><th>전일대비</th>'+
+          '<th class="l">12거래일</th><th>의견</th><th>목표가 대비</th></tr></thead>'+
+          '<tbody id="c-tbody">'+cRows()+'</tbody></table></div></div>'+
+        '<div class="c-card"><div class="c-ch"><h3>최근 리포트</h3>'+
+          '<span class="c-right"><span>전체 보기 →</span></span></div>'+reps+'</div>'+
+      '</div>'+
+      '<div class="c-foot">본 화면은 디자인 시안입니다. 표기된 회사·종목·시세·리포트·인물은 모두 가상의 예시이며 실제 투자의견이 아닙니다.</div>'+
+    '</div>';
+}
+
+/* ================= 마운트 & 인터랙션 ================= */
+var A=document.getElementById('s-a'), B=document.getElementById('s-b'), C=document.getElementById('s-c');
+A.innerHTML=renderA(); B.innerHTML=renderB(); C.innerHTML=renderC();
+
+function countC(){
+  var n=STOCKS.filter(function(s){return cSector==='전체'||s.s===cSector;}).length;
+  var el=document.getElementById('c-count');
+  if(el) el.textContent=n+'종목 표시 / 전체 42종목';
+}
+countC();
+
+document.querySelectorAll('.tabs button').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var go=btn.dataset.go;
+    document.querySelectorAll('.tabs button').forEach(function(b){
+      b.setAttribute('aria-selected', String(b===btn));
+    });
+    [['a',A],['b',B],['c',C]].forEach(function(p){ p[1].hidden = (p[0]!==go); });
+    window.scrollTo({top:0,behavior:'instant'});
+  });
+});
+
+B.addEventListener('click',function(e){
+  var b=e.target.closest('[data-sec]'); if(!b) return;
+  bSector=b.dataset.sec;
+  B.querySelectorAll('[data-sec]').forEach(function(x){
+    x.setAttribute('aria-selected', String(x.dataset.sec===bSector));
+  });
+  document.getElementById('b-tbody').innerHTML=bRows();
+});
+
+C.addEventListener('click',function(e){
+  var b=e.target.closest('[data-csec]'); if(!b) return;
+  cSector=b.dataset.csec;
+  C.querySelectorAll('[data-csec]').forEach(function(x){
+    x.setAttribute('aria-pressed', String(x.dataset.csec===cSector));
+  });
+  document.getElementById('c-tbody').innerHTML=cRows();
+  countC();
+});
+})();
+</script>

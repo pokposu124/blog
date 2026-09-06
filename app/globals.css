@@ -1,1 +1,52 @@
 @import "tailwindcss";
+
+@theme {
+  --color-ground: #f3f4f6;
+  --color-surface: #ffffff;
+  --color-raised: #fafbfc;
+  --color-ink: #15181d;
+  --color-ink-2: #545b65;
+  --color-ink-3: #878e99;
+  --color-line: #e0e4e9;
+  --color-line-2: #eef0f3;
+  /* 공격 = 이 도구의 논지. 경보용 빨강이 아니라 눌러 앉힌 벽돌색. */
+  --color-attack: #a3322a;
+  --color-attack-soft: #fbeae8;
+  --color-keep: #1f6a4d;
+  --color-keep-soft: #e6f2ec;
+
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-ground: #0e1014;
+    --color-surface: #161a20;
+    --color-raised: #1c212a;
+    --color-ink: #e7eaef;
+    --color-ink-2: #a0a8b4;
+    --color-ink-3: #737b87;
+    --color-line: #2a303a;
+    --color-line-2: #232831;
+    --color-attack: #e8776b;
+    --color-attack-soft: #2e1b19;
+    --color-keep: #5cbd93;
+    --color-keep-soft: #16281f;
+  }
+}
+
+body {
+  background: var(--color-ground);
+  color: var(--color-ink);
+  font-family: ui-sans-serif, system-ui, "Apple SD Gothic Neo", "Malgun Gothic",
+    sans-serif;
+}
+
+/* 한국어는 어절 단위로 끊는다. */
+h1, h2, h3, h4, p, li, td, th, label, button, span {
+  word-break: keep-all;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}

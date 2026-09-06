@@ -15,6 +15,15 @@ import { z } from "zod";
 /** 영향이 나타나기까지 걸리는 시간. 히스토리 diff에서 비교 가능하도록 이산값으로 고정한다. */
 export const YEARS_TO_IMPACT = ["<1y", "1-2y", "2-3y", "3-5y", ">5y"] as const;
 
+/** 화면 표기. 결과 뷰와 diff가 같은 문구를 쓰도록 여기서 한 벌만 관리한다. */
+export const YEARS_LABEL: Record<(typeof YEARS_TO_IMPACT)[number], string> = {
+  "<1y": "1년 이내",
+  "1-2y": "1~2년",
+  "2-3y": "2~3년",
+  "3-5y": "3~5년",
+  ">5y": "5년 이상",
+};
+
 export const CollapseScenario = z.strictObject({
   trigger: z
     .string()

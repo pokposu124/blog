@@ -120,15 +120,19 @@ app/
   history/[ticker]/page.tsx     종목별 히스토리 + diff
   api/documents/route.ts        PDF 업로드 (페이지 수 검사 → Files API)
   api/analyze/route.ts          분석 스트리밍 (SSE)
+  _components/BearCaseView.tsx  결과 렌더 (두 페이지가 공유)
 lib/
   anthropic.ts                  클라이언트 + 모델/툴 상수
   schema.ts                     Zod 스키마 + JSON Schema (단일 출처)
   db.ts                         better-sqlite3 연결 + 마이그레이션
   diff.ts                       결과 구조 diff
+  events.ts                     SSE 이벤트 계약 (서버·UI 공유)
 prompts/
   bear-case.md                  시스템 프롬프트 (코드 수정 없이 튜닝)
 db/
   schema.sql
+scripts/
+  smoke.ts                      실서버 확인용 1회 호출
 design/                         (이전 작업물 — 이 프로젝트와 무관)
 ```
 
@@ -138,10 +142,14 @@ design/                         (이전 작업물 — 이 프로젝트와 무관
 ## 명령어
 
 ```bash
-npm run dev      # localhost:3000
+npm run dev        # localhost:3000
 npm run build
-npm run lint
-npx tsc --noEmit # 타입 체크
+npm run typecheck  # tsc --noEmit
+
+# 실제 API로만 확인되는 것들을 한 번에 태운다 (요금 발생)
+npm run smoke                              # 웹서치 켜고 호출
+npm run smoke -- --no-search               # 툴 조합만 확인
+npm run smoke -- --pdf ./사업보고서.pdf     # Files API + file_id 첨부까지
 ```
 
 `next.config.ts`에 `serverExternalPackages: ["better-sqlite3"]`가 필요하다.

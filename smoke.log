@@ -1,0 +1,5 @@
+
+> bear-case@0.1.0 smoke
+> node --experimental-strip-types --no-warnings scripts/smoke.ts --no-search
+
+ANTHROPIC_API_KEY가 없습니다. .env.local에 넣으세요.

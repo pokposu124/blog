@@ -8,3 +8,6 @@ next-env.d.ts
 db/*.db
 db/*.db-journal
 db/*.db-wal
+
+# 스모크 테스트가 만드는 픽스처
+test-fixture.pdf

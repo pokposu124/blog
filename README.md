@@ -25,6 +25,11 @@ npm run smoke
 npm run smoke -- --pdf ./사업보고서.pdf
 ```
 
+터미널을 못 쓸 때는 GitHub Actions로 돌린다. 저장소 시크릿에
+`ANTHROPIC_API_KEY`를 등록하고(Settings → Secrets and variables → Actions),
+Actions 탭의 **스모크 (실서버 확인)** 워크플로를 수동 실행하면 된다.
+결과는 잡 요약(Summary)에 그대로 찍힌다.
+
 ## 화면
 
 - `/` — 테제 입력, PDF 첨부, 웹서치 토글, 스트리밍 결과

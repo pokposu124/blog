@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import fs from "node:fs";
 import path from "node:path";
-import { BEAR_CASE_JSON_SCHEMA, EMIT_TOOL_NAME } from "./schema";
+import { BEAR_CASE_JSON_SCHEMA, EMIT_TOOL_NAME } from "./schema.ts";
 
 /**
  * Anthropic 클라이언트와 모델/툴 상수. **서버에서만** import한다.

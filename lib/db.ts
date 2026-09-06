@@ -75,3 +75,113 @@ export function insertDocument(row: {
     .prepare<[number], DocumentRow>("SELECT * FROM documents WHERE id = ?")
     .get(Number(info.lastInsertRowid))!;
 }
+
+/* ------------------------------------------------------------------ */
+/* analyses                                                            */
+/* ------------------------------------------------------------------ */
+
+export interface AnalysisRow {
+  id: number;
+  ticker: string;
+  name: string;
+  price: number;
+  target_price: number;
+  thesis: string;
+  bull_assumptions: string;
+  web_search_enabled: number;
+  model: string;
+  status: "running" | "done" | "error";
+  result: string | null;
+  citations: string | null;
+  usage: string | null;
+  error: string | null;
+  created_at: string;
+  finished_at: string | null;
+}
+
+export function insertAnalysis(row: {
+  ticker: string;
+  name: string;
+  price: number;
+  target_price: number;
+  thesis: string;
+  bull_assumptions: string[];
+  web_search_enabled: boolean;
+  model: string;
+}): number {
+  const info = db()
+    .prepare(
+      `INSERT INTO analyses
+         (ticker, name, price, target_price, thesis, bull_assumptions,
+          web_search_enabled, model, status)
+       VALUES
+         (@ticker, @name, @price, @target_price, @thesis, @bull_assumptions,
+          @web_search_enabled, @model, 'running')`,
+    )
+    .run({
+      ...row,
+      bull_assumptions: JSON.stringify(row.bull_assumptions),
+      web_search_enabled: row.web_search_enabled ? 1 : 0,
+    });
+  return Number(info.lastInsertRowid);
+}
+
+export function linkAnalysisDocuments(
+  analysisId: number,
+  documentIds: readonly number[],
+): void {
+  if (documentIds.length === 0) return;
+  const stmt = db().prepare(
+    "INSERT OR IGNORE INTO analysis_documents (analysis_id, document_id) VALUES (?, ?)",
+  );
+  const tx = db().transaction((ids: readonly number[]) => {
+    for (const id of ids) stmt.run(analysisId, id);
+  });
+  tx(documentIds);
+}
+
+export function finishAnalysis(
+  id: number,
+  payload: { result: unknown; citations: unknown; usage: unknown },
+): void {
+  db()
+    .prepare(
+      `UPDATE analyses
+          SET status = 'done', result = ?, citations = ?, usage = ?,
+              finished_at = datetime('now')
+        WHERE id = ?`,
+    )
+    .run(
+      JSON.stringify(payload.result),
+      JSON.stringify(payload.citations),
+      JSON.stringify(payload.usage),
+      id,
+    );
+}
+
+export function failAnalysis(id: number, message: string): void {
+  db()
+    .prepare(
+      `UPDATE analyses
+          SET status = 'error', error = ?, finished_at = datetime('now')
+        WHERE id = ?`,
+    )
+    .run(message, id);
+}
+
+/** 같은 종목의 완료된 분석을 최신순으로. diff의 기준이 된다. */
+export function listAnalysesByTicker(ticker: string): AnalysisRow[] {
+  return db()
+    .prepare<[string], AnalysisRow>(
+      `SELECT * FROM analyses
+        WHERE ticker = ? AND status = 'done'
+        ORDER BY created_at DESC, id DESC`,
+    )
+    .all(ticker);
+}
+
+export function getAnalysis(id: number): AnalysisRow | undefined {
+  return db()
+    .prepare<[number], AnalysisRow>("SELECT * FROM analyses WHERE id = ?")
+    .get(id);
+}

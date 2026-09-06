@@ -1,3 +1,4 @@
+import { BreakerChecklist } from "./BreakerChecklist";
 import type { Citation } from "@/lib/events";
 import { YEARS_LABEL, type BearCase } from "@/lib/schema";
 
@@ -29,11 +30,16 @@ function Section({
 export function BearCaseView({
   result,
   price,
+  ticker,
   citations,
+  breakerChecks,
 }: {
   result: BearCase;
   price: number;
+  ticker: string;
   citations?: Citation[];
+  /** 서버에서 미리 읽은 확인 상태. 없으면 체크리스트가 직접 가져온다. */
+  breakerChecks?: Record<string, string>;
 }) {
   return (
     <div className="flex flex-col gap-7">
@@ -119,16 +125,11 @@ export function BearCaseView({
       </Section>
 
       <Section n="04" title="테제 붕괴 신호" note="이게 확인되면 접는다">
-        <ul className="flex flex-col gap-px overflow-hidden rounded-lg border border-line bg-line">
-          {result.thesis_breakers.map((b, i) => (
-            <li key={i} className="flex items-start gap-3 bg-surface px-4 py-3">
-              <span className="tabular mt-px shrink-0 font-mono text-[11px] text-ink-3">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="text-[13.5px] leading-snug">{b}</span>
-            </li>
-          ))}
-        </ul>
+        <BreakerChecklist
+          ticker={ticker}
+          breakers={result.thesis_breakers}
+          initialChecks={breakerChecks}
+        />
       </Section>
 
       <Section n="05" title="공매도가 아는 것">

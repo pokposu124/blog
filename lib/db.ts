@@ -185,3 +185,48 @@ export function getAnalysis(id: number): AnalysisRow | undefined {
     .prepare<[number], AnalysisRow>("SELECT * FROM analyses WHERE id = ?")
     .get(id);
 }
+
+/* ------------------------------------------------------------------ */
+/* breaker_checks                                                      */
+/* ------------------------------------------------------------------ */
+
+export interface BreakerCheckRow {
+  breaker: string;
+  checked_at: string;
+}
+
+/** 확인된 신호만 돌려준다. 문구 → 확인 시각. */
+export function listBreakerChecks(ticker: string): Record<string, string> {
+  const rows = db()
+    .prepare<[string], BreakerCheckRow>(
+      "SELECT breaker, checked_at FROM breaker_checks WHERE ticker = ?",
+    )
+    .all(ticker);
+  return Object.fromEntries(rows.map((r) => [r.breaker, r.checked_at]));
+}
+
+/** 체크하면 행을 만들고, 해제하면 지운다. 돌려주는 값은 확인 시각(해제면 null). */
+export function setBreakerCheck(
+  ticker: string,
+  breaker: string,
+  checked: boolean,
+): string | null {
+  if (!checked) {
+    db()
+      .prepare("DELETE FROM breaker_checks WHERE ticker = ? AND breaker = ?")
+      .run(ticker, breaker);
+    return null;
+  }
+  db()
+    .prepare(
+      `INSERT INTO breaker_checks (ticker, breaker) VALUES (?, ?)
+       ON CONFLICT (ticker, breaker) DO NOTHING`,
+    )
+    .run(ticker, breaker);
+  const row = db()
+    .prepare<[string, string], BreakerCheckRow>(
+      "SELECT breaker, checked_at FROM breaker_checks WHERE ticker = ? AND breaker = ?",
+    )
+    .get(ticker, breaker);
+  return row?.checked_at ?? null;
+}

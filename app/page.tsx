@@ -318,7 +318,14 @@ export default function Home() {
           </div>
         )}
 
-        {result && <BearCaseView result={result} price={Number(price)} citations={citations} />}
+        {result && (
+          <BearCaseView
+            result={result}
+            price={Number(price)}
+            ticker={ticker.trim()}
+            citations={citations}
+          />
+        )}
 
         {!result && !running && !error && (
           <div className="rounded-lg border border-dashed border-line p-10 text-center text-[13px] text-ink-3">

@@ -41,3 +41,12 @@ CREATE TABLE IF NOT EXISTS analysis_documents (
   document_id INTEGER NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
   PRIMARY KEY (analysis_id, document_id)
 );
+
+-- thesis_breakers 확인 여부. 분석 실행이 아니라 종목+신호 문구에 묶는다.
+-- 재분석해도 같은 신호면 확인 표시가 유지된다. 행의 존재 = 확인됨.
+CREATE TABLE IF NOT EXISTS breaker_checks (
+  ticker     TEXT NOT NULL,
+  breaker    TEXT NOT NULL,
+  checked_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (ticker, breaker)
+);

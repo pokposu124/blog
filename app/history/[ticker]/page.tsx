@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BearCaseView } from "@/app/_components/BearCaseView";
-import { listAnalysesByTicker, type AnalysisRow } from "@/lib/db";
+import {
+  listAnalysesByTicker,
+  listBreakerChecks,
+  type AnalysisRow,
+} from "@/lib/db";
 import { diffBearCase, type Change } from "@/lib/diff";
 import type { Citation } from "@/lib/events";
 import type { BearCase } from "@/lib/schema";
@@ -142,7 +146,13 @@ export default async function HistoryPage({
       )}
 
       {result ? (
-        <BearCaseView result={result} price={current.price} citations={parseCitations(current)} />
+        <BearCaseView
+          result={result}
+          price={current.price}
+          ticker={ticker}
+          citations={parseCitations(current)}
+          breakerChecks={listBreakerChecks(ticker)}
+        />
       ) : (
         <p className="rounded-lg border border-attack bg-attack-soft p-4 text-[13px]">
           저장된 결과를 읽을 수 없다.

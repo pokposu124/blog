@@ -108,6 +108,11 @@
 - `analyses` — `id, ticker, name, price, target_price, thesis, bull_assumptions(JSON),
   web_search_enabled, model, result(JSON), citations(JSON), usage(JSON), created_at, status, error`
 - `analysis_documents` — `analysis_id, document_id` (N:N)
+- `breaker_checks` — `ticker, breaker, checked_at` (PK: ticker+breaker)
+
+`thesis_breakers` 확인 여부는 **분석 실행이 아니라 종목+신호 문구에** 묶는다.
+재분석해도 같은 문구의 신호면 확인 표시가 유지된다 — 신호는 특정 실행의 산출물이
+아니라 세상에 대한 관측이기 때문이다. 행의 존재 자체가 "확인됨"이고, 해제하면 지운다.
 
 `web_search_enabled`는 결과와 함께 저장한다. 히스토리 목록에서 뱃지로 표시한다.
 같은 `ticker`의 직전 분석과 구조적 diff를 보여준다 (필드 단위 추가/삭제/변경).
@@ -119,6 +124,7 @@ app/
   page.tsx                      입력 폼 + 결과
   history/[ticker]/page.tsx     종목별 히스토리 + diff
   api/documents/route.ts        PDF 업로드 (페이지 수 검사 → Files API)
+  api/breakers/route.ts         붕괴 신호 확인 상태 조회/토글
   api/analyze/route.ts          분석 스트리밍 (SSE)
   _components/BearCaseView.tsx  결과 렌더 (두 페이지가 공유)
 lib/

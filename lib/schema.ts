@@ -176,6 +176,12 @@ export const AnalyzeInput = z.strictObject({
 
 export type AnalyzeInputT = z.infer<typeof AnalyzeInput>;
 
+export const BreakerCheckInput = z.strictObject({
+  ticker: z.string().trim().min(1, "종목 코드가 필요합니다."),
+  breaker: z.string().trim().min(1, "신호 문구가 필요합니다."),
+  checked: z.boolean(),
+});
+
 /* ------------------------------------------------------------------ */
 /* thesis_breakers 관측 가능성 휴리스틱                                  */
 /* ------------------------------------------------------------------ */

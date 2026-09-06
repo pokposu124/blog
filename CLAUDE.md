@@ -139,6 +139,8 @@ db/
   schema.sql
 scripts/
   smoke.ts                      실서버 확인용 1회 호출
+  mock-anthropic.mjs            개발용 가짜 Anthropic 서버 (요금 없이 전체 흐름)
+  make-test-pdf.mjs             첨부 확인용 PDF 생성
 design/                         (이전 작업물 — 이 프로젝트와 무관)
 ```
 
@@ -149,6 +151,10 @@ design/                         (이전 작업물 — 이 프로젝트와 무관
 
 ```bash
 npm run dev        # localhost:3000
+
+# 요금 없이 전체 흐름 돌려보기 (터미널 둘)
+npm run mock
+ANTHROPIC_API_KEY=mock ANTHROPIC_BASE_URL=http://localhost:4010 npm run dev
 npm run build
 npm run typecheck  # tsc --noEmit
 

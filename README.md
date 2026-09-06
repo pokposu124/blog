@@ -15,6 +15,30 @@ npm run dev                        # http://localhost:3000
 
 첫 실행 시 `db/bear-case.db`가 만들어진다 (git에 올라가지 않는다).
 
+## 요금 없이 돌려보기
+
+목 서버를 붙이면 API를 한 번도 부르지 않고 앱 전체를 클릭해볼 수 있다.
+업로드 → 스트리밍 → 검증/재시도 → 저장 → 히스토리 diff까지 실제 코드를 그대로 탄다.
+`/v1/files`도 흉내내므로 PDF 첨부까지 된다.
+
+```bash
+npm run mock                                    # 터미널 1
+ANTHROPIC_API_KEY=mock \
+ANTHROPIC_BASE_URL=http://localhost:4010 \
+npm run dev                                     # 터미널 2
+```
+
+종목 코드로 예외 경로를 부른다. 그 외에는 정상 결과가 나온다.
+
+| 종목 코드 | 무엇을 태우는가 |
+|---|---|
+| `RETRY`  | 1차 응답이 규격 위반 → 교정 후 재시도 |
+| `SEARCH` | 검색 실패 블록 (`content`가 배열이 아니라 에러 객체인 분기) |
+| `REFUSE` | `stop_reason: "refusal"` |
+| `NOTOOL` | 툴을 끝내 호출하지 않음 |
+
+목표주가를 바꿔 다시 돌리면 결과 수치가 달라져 히스토리 diff에 변화가 잡힌다.
+
 ## 실서버 확인
 
 실제 호출로만 드러나는 두 가지 — strict 커스텀 툴과 web_search 서버 툴의 조합,
